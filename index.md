@@ -39,15 +39,192 @@ Here's where you'll put images of your schematics. [Tinkercad](https://www.tinke
 # Code
 
 ```c++
-void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
-  Serial.println("Hello World!");
+
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27, 16, 2); // I2C address 0x27, 16 column and 2 rows
+
+#define led_pin 12
+#define led_pin 11
+
+int buzzer = 13;
+
+const int A_1B = 5;
+const int A_1A = 6;
+const int B_1B = 10;
+const int B_1A = 9;
+
+const int echoPin = 4;
+const int trigPin = 3;
+
+const int rightIR = 7;
+const int leftIR = 8;
+
+float readSensorData() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  float distance = pulseIn(echoPin, HIGH) / 58.00; //Equivalent to (340m/s*1us)/2
+  return distance;
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void moveForward(int speed) {
+  analogWrite(A_1B, 0);
+  analogWrite(A_1A, speed);
+  analogWrite(B_1B, speed);
+  analogWrite(B_1A, 0);
 
+   lcd.clear();
+  lcd.setCursor(3, 0); 
+  lcd.print("Going");
+  
+  lcd.setCursor(2, 1); // set the cursor to column 2, line 1
+  lcd.print("forwards");
+    
+  digitalWrite(11,HIGH);
+  digitalWrite(12,HIGH);
+}
+
+void moveBackward(int speed) {
+  analogWrite(A_1B, speed);
+  analogWrite(A_1A, 0);
+  analogWrite(B_1B, 0);
+  analogWrite(B_1A, speed);
+
+   lcd.clear();
+  lcd.setCursor(3, 0); 
+  lcd.print("Backing");
+  lcd.setCursor(2, 1); // set the cursor to column 2, line 1
+  lcd.print("Up");
+
+  digitalWrite(11,HIGH);
+  digitalWrite(12,HIGH);
+  delay(1000);
+  digitalWrite(11,LOW);
+  digitalWrite(12,LOW);
+  delay(1000);
+  
+}
+
+
+void backLeft(int speed) {
+  analogWrite(A_1B, speed);
+  analogWrite(A_1A, 0);
+  analogWrite(B_1B, 0);
+  analogWrite(B_1A, 0);
+
+   lcd.clear();
+  lcd.setCursor(3, 0); 
+  lcd.print("Backing");
+  lcd.setCursor(2, 1); // set the cursor to column 2, line 1
+  lcd.print("Right");
+
+  digitalWrite(11,LOW);
+  digitalWrite(12,HIGH);
+  delay(1000);
+  digitalWrite(11,HIGH);
+  digitalWrite(12,HIGH);
+  delay(1000);
+  
+  digitalWrite(11,HIGH);
+  digitalWrite(12,LOW);
+  delay(1000);
+  digitalWrite(11,HIGH);
+  digitalWrite(12,HIGH);
+  delay(1000);
+}
+
+void backRight(int speed) {
+  analogWrite(A_1B, 0);
+  analogWrite(A_1A, 0);
+  analogWrite(B_1B, 0);
+  analogWrite(B_1A, speed);
+
+   lcd.clear();
+  lcd.setCursor(3, 0); 
+  lcd.print("Backing");
+  lcd.setCursor(2, 1); // set the cursor to column 2, line 1
+  lcd.print("Left");
+
+  digitalWrite(11,LOW);
+  digitalWrite(12,HIGH);
+  delay(1000);
+  digitalWrite(11,HIGH);
+  digitalWrite(12,HIGH);
+  delay(1000);
+}
+
+void stopMove() {
+  analogWrite(A_1B, 0);
+  analogWrite(A_1A, 0);
+  analogWrite(B_1B, 0);
+  analogWrite(B_1A, 0);
+
+   lcd.clear();
+  lcd.setCursor(3, 0); 
+  lcd.print("Obstacle");
+  lcd.setCursor(2, 1); // set the cursor to column 2, line 1
+  lcd.print("Detected");
+}
+
+void setup() 
+{
+  Serial.begin(9600);
+
+  //motor
+  pinMode(A_1B, OUTPUT);
+  pinMode(A_1A, OUTPUT);
+  pinMode(B_1B, OUTPUT);
+  pinMode(B_1A, OUTPUT);
+
+  //ultrasonic
+  pinMode(echoPin, INPUT);
+  pinMode(trigPin, OUTPUT);
+
+  //IR obstacle
+  pinMode(leftIR, INPUT);
+  pinMode(rightIR, INPUT);
+
+lcd.init(); // initialize the lcd
+  lcd.backlight();
+
+pinMode(11, OUTPUT);
+pinMode(12,OUTPUT);
+
+pinMode(buzzer,OUTPUT);//initialize the buzzer pin as an output
+
+}
+
+void loop() 
+{
+
+  int left = digitalRead(leftIR);  // 0: Obstructed   1: Empty
+  int right = digitalRead(rightIR);
+
+  if (!left && right) 
+  {
+    backRight(150);  
+  } else if (left && !right) {
+    backLeft(150);  
+  } else if (!left && !right) {
+    moveBackward(150);
+  } else {
+    float distance = readSensorData();
+    Serial.println(distance);
+    if (distance > 50) { // Safe
+      moveBackward(200);
+    } else if (distance < 10 && distance > 2) { // Attention
+      moveBackward(200);
+      delay(1000);
+      backLeft(150);
+      delay(500);
+      backRight(150);
+    } else {
+      moveForward(150); 
+    }
+  }
 }
 ```
 
