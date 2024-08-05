@@ -33,13 +33,9 @@ For your final milestone, explain the outcome of your project. Key details to in
 
 **Don't forget to replace the text below with the embedding for your milestone video. Go to Youtube, click Share -> Embed, and copy and paste the code to replace what's below.**
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ooFm7ke5JDY?si=H7RZNkHNrPo6AQaj" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-For your second milestone, explain what you've worked on since your previous milestone. You can highlight:
-- Technical details of what you've accomplished and how they contribute to the final goal
-- What has been surprising about the project so far
-- Previous challenges you faced that you overcame
-- What needs to be completed before your final milestone 
+For my second Milestone, I added an LCD screen and LEDs to my self driving car. The LCD screen will say whether the robot is moving forwards, backwards, or backing left or right. I started off by trying to get the LCD to display some text and then I changed that code so that the screen would say what direction the robot is going (forward, backwards) For the LEDs, they blink when the robot is going backwards When the car is backing left the blue LED would blink, when the robot is backing right the red LED will blink, and while going backwards both LEDs blink 
 
 # First Milestone
 
