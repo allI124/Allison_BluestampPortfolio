@@ -39,7 +39,6 @@ Here's where you'll put images of your schematics. [Tinkercad](https://www.tinke
 # Code
 
 ```c++
-
 #include <LiquidCrystal_I2C.h>
 
 LiquidCrystal_I2C lcd(0x27, 16, 2); // I2C address 0x27, 16 column and 2 rows
