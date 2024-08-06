@@ -193,12 +193,10 @@ pinMode(11, OUTPUT);
 pinMode(12,OUTPUT);
 
 pinMode(buzzer,OUTPUT);//initialize the buzzer pin as an output
-
 }
 
 void loop() 
 {
-
   int left = digitalRead(leftIR);  // 0: Obstructed   1: Empty
   int right = digitalRead(rightIR);
 
