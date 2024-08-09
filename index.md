@@ -75,7 +75,7 @@ void moveForward(int speed) {
   analogWrite(B_1B, speed);
   analogWrite(B_1A, 0);
 
-   lcd.clear();
+  lcd.clear();
   lcd.setCursor(3, 0); 
   lcd.print("Going");
   
@@ -92,7 +92,7 @@ void moveBackward(int speed) {
   analogWrite(B_1B, 0);
   analogWrite(B_1A, speed);
 
-   lcd.clear();
+  lcd.clear();
   lcd.setCursor(3, 0); 
   lcd.print("Backing");
   lcd.setCursor(2, 1); // set the cursor to column 2, line 1
@@ -104,9 +104,12 @@ void moveBackward(int speed) {
   digitalWrite(11,LOW);
   digitalWrite(12,LOW);
   delay(1000);
-  
-}
 
+  digitalWrite(buzzer,HIGH);
+  delay(2);//wait for 2ms
+  digitalWrite(buzzer,LOW);
+  delay(2);//wait for 2ms
+}
 
 void backLeft(int speed) {
   analogWrite(A_1B, speed);
@@ -120,13 +123,6 @@ void backLeft(int speed) {
   lcd.setCursor(2, 1); // set the cursor to column 2, line 1
   lcd.print("Right");
 
-  digitalWrite(11,LOW);
-  digitalWrite(12,HIGH);
-  delay(1000);
-  digitalWrite(11,HIGH);
-  digitalWrite(12,HIGH);
-  delay(1000);
-  
   digitalWrite(11,HIGH);
   digitalWrite(12,LOW);
   delay(1000);
@@ -141,7 +137,7 @@ void backRight(int speed) {
   analogWrite(B_1B, 0);
   analogWrite(B_1A, speed);
 
-   lcd.clear();
+  lcd.clear();
   lcd.setCursor(3, 0); 
   lcd.print("Backing");
   lcd.setCursor(2, 1); // set the cursor to column 2, line 1
@@ -161,7 +157,7 @@ void stopMove() {
   analogWrite(B_1B, 0);
   analogWrite(B_1A, 0);
 
-   lcd.clear();
+  lcd.clear();
   lcd.setCursor(3, 0); 
   lcd.print("Obstacle");
   lcd.setCursor(2, 1); // set the cursor to column 2, line 1
@@ -195,8 +191,7 @@ pinMode(12,OUTPUT);
 pinMode(buzzer,OUTPUT);//initialize the buzzer pin as an output
 }
 
-void loop() 
-{
+void loop() {
   int left = digitalRead(leftIR);  // 0: Obstructed   1: Empty
   int right = digitalRead(rightIR);
 
